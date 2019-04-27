@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsPixmapItem>
+#include <cmath>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -157,11 +158,108 @@ void MainWindow::on_actionOpen_triggered()
         qDebug()<<"hasAlpha:"<<rightPixmap.hasAlpha();
 
         // settings
-        this->setWindowTitle(info->fileName() + " - WINDOW_TITLE");
+        this->setWindowTitle(info->fileName() + " - " + WINDOW_TITLE);
 
         setActionStatus(true);
 
         size->setText(QString::number(leftPixmapItem->pixmap().width())
                       + " x " + QString::number(leftPixmapItem->pixmap().height()));
     }
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    qApp->quit();
+}
+
+void MainWindow::on_actionHistogram_triggered()
+{
+    QDialog * hstgrmDialog = new QDialog(this);
+    QScrollArea * scrollArea = new QScrollArea(hstgrmDialog);
+    Histogram * hstgrm = new Histogram(scrollArea);
+    hstgrm->computeHstgrm(rightPixmapItem->pixmap().toImage());
+
+    if (hstgrm == nullptr)
+        return;
+
+
+    scrollArea->setWidget(hstgrm);
+
+    QHBoxLayout * layout = new QHBoxLayout;
+    layout->addWidget(scrollArea);
+    hstgrmDialog->setLayout(layout);
+
+    hstgrm->resize(800, 780);
+    hstgrmDialog->setFixedWidth(820);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->adjustSize();
+
+    hstgrmDialog->setWindowTitle("Histogram - ImageQt");
+
+    hstgrmDialog->show();
+
+}
+
+void MainWindow::on_actionAdjust_triggered()
+{
+    // left
+    int height = leftPixmapItem->pixmap().height();
+    int width = leftPixmapItem->pixmap().width();
+    int max_height = ui->leftGraphicsView->height();
+    int max_width = ui->leftGraphicsView->width();
+    int size,max_size,fact=0;
+    double val=0;
+
+
+    size = qMin(width,height);
+    max_size = qMin(max_width,max_height);
+
+
+    if (size < max_size) {
+        while ((size*val) < max_size)
+            val = pow(1.2,fact++);
+        val = pow(1.2,fact-2);
+        ui->leftGraphicsView->setFactor(fact-2);
+    }
+
+    else {
+        val = 1;
+        while ((size*val) > max_size)
+            val = pow(1.2,fact--);
+        val = pow(1.2,fact+1);
+        ui->leftGraphicsView->setFactor(fact+1);
+    }
+
+    ui->leftGraphicsView->scale(val,val);
+
+
+    // right
+    height = leftPixmapItem->pixmap().height();
+    width = leftPixmapItem->pixmap().width();
+    max_height = ui->rightGraphicsView->height();
+    max_width = ui->rightGraphicsView->width();
+    size = max_size = fact = 0;
+    val=0;
+
+
+    size = qMin(width,height);
+    max_size = qMin(max_width,max_height);
+
+
+    if (size < max_size) {
+        while ((size*val) < max_size)
+            val = pow(1.2,fact++);
+        val = pow(1.2,fact-2);
+        ui->rightGraphicsView->setFactor(fact-2);
+    }
+
+    else {
+        val = 1;
+        while ((size*val) > max_size)
+            val = pow(1.2,fact--);
+        val = pow(1.2,fact+1);
+        ui->rightGraphicsView->setFactor(fact+1);
+    }
+
+    ui->rightGraphicsView->scale(val,val);
 }

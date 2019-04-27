@@ -31,10 +31,10 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QGraphicsView" name="leftGraphicsView"/>
+      <widget class="GraphicsView" name="leftGraphicsView"/>
      </item>
      <item>
-      <widget class="QGraphicsView" name="rightGraphicsView"/>
+      <widget class="GraphicsView" name="rightGraphicsView"/>
      </item>
     </layout>
    </widget>
@@ -91,22 +91,22 @@
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>打开</string>
    </property>
   </action>
   <action name="actionClose">
    <property name="text">
-    <string>Close</string>
+    <string>关闭</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>保存</string>
    </property>
   </action>
   <action name="actionSave_AS">
    <property name="text">
-    <string>Save_AS</string>
+    <string>另存为</string>
    </property>
   </action>
   <action name="actionExit">
@@ -114,8 +114,20 @@
     <string>Exit</string>
    </property>
   </action>
+  <action name="actionAdjust">
+   <property name="text">
+    <string>Adjust</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">graphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

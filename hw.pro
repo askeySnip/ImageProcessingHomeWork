@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        graphicsview.cpp \
+        histogram.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        graphicsview.h \
+        histogram.h \
         mainwindow.h
 
 FORMS += \

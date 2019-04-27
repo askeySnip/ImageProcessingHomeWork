@@ -12,6 +12,8 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
+#include "histogram.h"
+
 #define WINDOW_TITLE    "Image Processing"
 #define WINDOW_CRITICAL "Error - Image Processing"
 #define WINDOW_WARNING  "Notice - Image Processing"
@@ -38,6 +40,12 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
+
+    void on_actionExit_triggered();
+
+    void on_actionHistogram_triggered();
+
+    void on_actionAdjust_triggered();
 
 private:
     Ui::MainWindow *ui;
