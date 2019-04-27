@@ -77,6 +77,15 @@ MainWindow::~MainWindow()
     }
 }
 
+void MainWindow::updateRightImage(QPixmap &pixmap)
+{
+
+    rightPixmapItem->setPixmap(pixmap);
+    rightScene->setSceneRect(QRectF(pixmap.rect()));
+
+    qDebug() << "repaintRightScene"  << rightScene->items().count();
+}
+
 void MainWindow::cleanImage()
 {
     leftScene->clear();
@@ -145,7 +154,8 @@ void MainWindow::on_actionOpen_triggered()
 
         // upload image
         info = new QFileInfo(imagePath);
-
+        leftMat = cv::imread(imagePath.toStdString());
+        rightMat = leftMat.clone();
         QPixmap leftPixmap(imagePath);
         leftPixmapItem = leftScene->addPixmap(leftPixmap);
         leftScene->setSceneRect(QRectF(leftPixmap.rect()));
@@ -262,4 +272,128 @@ void MainWindow::on_actionAdjust_triggered()
     }
 
     ui->rightGraphicsView->scale(val,val);
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+
+}
+
+void MainWindow::on_actionSave_AS_triggered()
+{
+
+    QString newPath = QFileDialog::getSaveFileName(this, tr("Save image"), QString(),
+            tr("All files (*);;"
+               "Image BPM (*.bpm);;"
+               "Image GIF (*.gif);;"
+               "Image JPG (*.jpg);;"
+               "Image JPEG (*.jpeg);;"
+               "Image PNG (*.png);;"
+               "Image PPM (*.ppm);;"
+               "Image XBM (*.xbm);;"
+               "Image XPM (*.xpm);;"));
+
+    if (!newPath.isEmpty()) {
+
+        QFile file(newPath);
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(this, tr(WINDOW_CRITICAL), tr("Unable to save image."));
+            return;
+        }
+
+        //Save image to new path
+        // rightPixmapItem->pixmap().save(newPath);
+        cv::imwrite(newPath.toStdString(), rightMat);
+    }
+
+}
+
+void MainWindow::on_actionRestore_triggered()
+{
+   QPixmap leftImage = leftPixmapItem->pixmap();
+   updateRightImage(leftImage);
+   ui->rightGraphicsView->resetTransform();
+   rightMat = leftMat.clone();
+}
+
+void MainWindow::on_actionAddGaussNoise_triggered()
+{
+
+//    QImage image = rightPixmapItem->pixmap().toImage();
+//    cv::Mat mat = QImageToMat(image).clone();
+    addGaussNoise(rightMat);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
+}
+
+void MainWindow::on_action_ArithmeticMeanFilter_triggered()
+{
+
+//    QImage image = rightPixmapItem->pixmap().toImage();
+//    cv::Mat src = QImageToMat(image);
+    cv::Mat src = rightMat.clone();
+    arithAverFilter(src, rightMat, 7);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
+}
+
+void MainWindow::on_actionGeometricMeanFilter_triggered()
+{
+
+//    QImage image = rightPixmapItem->pixmap().toImage();
+//    cv::Mat src = QImageToMat(image);
+    cv::Mat src = rightMat.clone();
+    geoAverFilter(src, rightMat, 7);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
+}
+
+void MainWindow::on_actionAdaptiveFilter_triggered()
+{
+
+//    QImage image = rightPixmapItem->pixmap().toImage();
+//    image = image.convertToFormat(QImage::Format_Indexed8);
+//    qDebug() << "image format" << image.format();
+//    cv::Mat src = QImageToMat(image);
+    qDebug() << rightMat.type();
+    cv::Mat src = rightMat.clone();
+    selfAdaptFilter(src, rightMat, 7);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
+}
+
+void MainWindow::on_actionTransGray_triggered()
+{
+
+    cvtColor(rightMat, rightMat, cv::COLOR_RGB2GRAY);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
+}
+
+void MainWindow::on_actionAddSaltNoise_triggered()
+{
+
+//    QImage image = rightPixmapItem->pixmap().toImage();
+//    cv::Mat mat = QImageToMat(image).clone();
+    addSaltNoise(rightMat, 1000);
+    QImage image = MatToQImage(rightMat);
+    QPixmap px = QPixmap::fromImage(image);
+    updateRightImage(px);
+    ui->rightGraphicsView->resetTransform();
+
 }

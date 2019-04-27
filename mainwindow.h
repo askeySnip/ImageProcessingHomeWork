@@ -13,6 +13,7 @@
 #include <QTranslator>
 
 #include "histogram.h"
+#include "algor.h"
 
 #define WINDOW_TITLE    "Image Processing"
 #define WINDOW_CRITICAL "Error - Image Processing"
@@ -47,6 +48,24 @@ private slots:
 
     void on_actionAdjust_triggered();
 
+    void on_actionSave_triggered();
+
+    void on_actionSave_AS_triggered();
+
+    void on_actionRestore_triggered();
+
+    void on_actionAddGaussNoise_triggered();
+
+    void on_action_ArithmeticMeanFilter_triggered();
+
+    void on_actionGeometricMeanFilter_triggered();
+
+    void on_actionAdaptiveFilter_triggered();
+
+    void on_actionTransGray_triggered();
+
+    void on_actionAddSaltNoise_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -61,6 +80,8 @@ private:
 
     QString getUserName();
     QString getUserPath();
+    cv::Mat leftMat;
+    cv::Mat rightMat;
 };
 
 #endif // MAINWINDOW_H

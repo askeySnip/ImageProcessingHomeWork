@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>881</width>
-    <height>525</height>
+    <width>1305</width>
+    <height>679</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -20,13 +20,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>881</width>
-      <height>461</height>
+      <width>1301</width>
+      <height>611</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -44,8 +44,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>881</width>
-     <height>22</height>
+     <width>1305</width>
+     <height>28</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -66,6 +66,12 @@
     <property name="title">
      <string>转换</string>
     </property>
+    <addaction name="actionAddGaussNoise"/>
+    <addaction name="action_ArithmeticMeanFilter"/>
+    <addaction name="actionGeometricMeanFilter"/>
+    <addaction name="actionAdaptiveFilter"/>
+    <addaction name="actionTransGray"/>
+    <addaction name="actionAddSaltNoise"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTransform"/>
@@ -117,6 +123,36 @@
   <action name="actionAdjust">
    <property name="text">
     <string>Adjust</string>
+   </property>
+  </action>
+  <action name="actionAddGaussNoise">
+   <property name="text">
+    <string>AddGaussNoise</string>
+   </property>
+  </action>
+  <action name="action_ArithmeticMeanFilter">
+   <property name="text">
+    <string> ArithmeticMeanFilter</string>
+   </property>
+  </action>
+  <action name="actionGeometricMeanFilter">
+   <property name="text">
+    <string>GeometricMeanFilter </string>
+   </property>
+  </action>
+  <action name="actionAdaptiveFilter">
+   <property name="text">
+    <string>AdaptiveFilter</string>
+   </property>
+  </action>
+  <action name="actionTransGray">
+   <property name="text">
+    <string>TransGray</string>
+   </property>
+  </action>
+  <action name="actionAddSaltNoise">
+   <property name="text">
+    <string>AddSaltNoise</string>
    </property>
   </action>
  </widget>
